@@ -1,0 +1,176 @@
+/*
+Author: Ryan Wakefield
+E-mail: rlw5221@psu.edu
+Course: CMPSC 121
+Assignment: Lab 9
+Due date: 11/1/2019
+File: HoagieShop.cpp
+Purpose: C++ program that implements an online hoagie shop
+Compiler: GNU gcc+
+Operating
+system: MS Windows 10
+References: Class demo programs (include any Web page references here)
+*/
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+using namespace std;
+//Constants
+const string star_line = "**************************************";
+
+//Function Prototypes
+
+void displayHoagies(double totalCost, vector<string> orderItems);
+void displayToppings(double totalCost, vector<string> orderItems, string hoagieType);
+void displayOrder_Cost(double totalCost, vector<string> orderItems);
+char anotherOrder();
+void exitMessage();
+//displayOrder_Cost(totalCost, orderItems);
+
+int main()
+{
+    double totalCost = 0;
+    vector<string> orderItems;
+
+    cout << star_line
+    << "\n\nWelcome to Joegie's Hoagies!\n\n"
+    << star_line << endl;
+    //Call to displayHoagies
+    displayHoagies(totalCost, orderItems);
+    return 0;
+}
+
+void displayHoagies(double totalCost, vector<string> orderItems)
+{
+    string hoagieType;
+    cout << "\nHoagie Menu ($8.00 each)"
+    << endl
+    << "1) Italian\n"
+    << "2) Ham and Swiss\n"
+    << "3) Turkey Breast\n"
+    << "4) Veggie\n"
+    << "5) Exit Menu"
+    << endl;
+    cout << "Your choice (1-5)? ";
+    cin >> hoagieType;
+    cout << endl << star_line;
+
+    if (hoagieType == "1" || hoagieType == "2" || hoagieType == "3" || hoagieType == "4")
+    {
+        totalCost = totalCost + 8;
+        displayToppings(totalCost, orderItems, hoagieType);
+    }
+    else if (hoagieType == "5")
+    {
+        exitMessage();
+    }
+    else
+    {
+        cout << "\n\nInvalid Entry: Please Enter Valid Number\n";
+        displayHoagies(totalCost, orderItems);
+    }
+}
+
+void displayToppings(double totalCost, vector<string> orderItems,string hoagieType)
+{
+    string toppingType;
+    string completeOrder;
+    cout << "\nToppings Menu\n\n"
+    << "1) Extra Cheese  ($2.00)\n"
+    << "2) Onions        ($1.50)\n"
+    << "3) Sweet Peppers ($1.00)\n"
+    << "4) Hot Peppers   ($1.00)\n"
+    << "5) None\n\n";
+    cout << "Your choice (1-5)? ";
+    cin >> toppingType;
+    cout << star_line;
+
+    if (toppingType == "1")
+    {
+       totalCost = totalCost + 2.00;
+       completeOrder = hoagieType + toppingType;
+       orderItems.push_back(completeOrder);
+       displayOrder_Cost(totalCost, orderItems);
+    }
+    else if (toppingType == "2")
+    {
+       totalCost = totalCost + 1.50;
+       completeOrder = hoagieType + toppingType;
+       orderItems.push_back(completeOrder);
+       displayOrder_Cost(totalCost, orderItems);
+    }
+    else if (toppingType == "3")
+    {
+       totalCost = totalCost + 1.00;
+       completeOrder = hoagieType + toppingType;
+       orderItems.push_back(completeOrder);
+       displayOrder_Cost(totalCost, orderItems);
+    }
+    else if (toppingType == "4")
+    {
+        totalCost = totalCost + 1.00;
+        completeOrder = hoagieType + toppingType;
+        orderItems.push_back(completeOrder);
+        displayOrder_Cost(totalCost, orderItems);
+    }
+    else if (toppingType == "5")
+    {
+        completeOrder = hoagieType + toppingType;
+        orderItems.push_back(completeOrder);
+        displayOrder_Cost(totalCost, orderItems);
+    }
+    else
+    {
+        cout << "Invalid Entry: Please Enter Valid Number\n";
+        displayToppings(totalCost, orderItems, hoagieType);
+    }
+}
+
+void displayOrder_Cost(double totalCost, vector<string> orderItems)
+{
+    string hoagies[4] = {"Italian", "Ham and Swiss", "Turkey Breast", "Veggie"};
+    string toppings[5] = {"Extra Cheese", "Onions", "Sweet Peppers", "Hot Peppers", "No Extra Topping"};
+    int length = orderItems.size();
+    cout << "\nYour Order: " << endl;
+    for (int i = 0; i < length; i++)
+    {
+        string grab = orderItems[i];
+        char sub = grab[0];
+        char top = grab[1];
+        int sub_int = sub;
+        int top_int = top;
+        sub_int = sub_int - 48;
+        top_int = top_int - 48;
+        cout << hoagies[sub_int - 1] << " with " << toppings[top_int - 1] << endl;
+    }
+    cout << setprecision(2) << fixed << "Your order total is $" << totalCost << "\n\n";
+    char choice = anotherOrder();
+    if (choice == 'Y')
+        displayHoagies(totalCost, orderItems);
+    else if (choice == 'N')
+        exitMessage();
+}
+
+char anotherOrder()
+{
+    char choice;
+    cout << "Would you like to order another Hoagie (Y/N)? ";
+    cin >> choice;
+    if (choice == 'Y' || choice == 'y')
+        return 'Y';
+    else if (choice == 'N' || choice == 'n')
+        return 'N';
+    else
+    {
+        cout << "Invalid Entry: Please Enter Valid Choice\n";
+        anotherOrder();
+    }
+}
+void exitMessage()
+{
+    cout << "\n" << star_line << "\n\n"
+    << "Thank You for visiting Joagie's Hoagies!\n"
+    << "Come back soon!\n"
+    << star_line;
+}
